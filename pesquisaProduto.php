@@ -31,8 +31,8 @@ if ($lista == false || empty($_GET['nomeInput'])) {
 <body style="margin-left: 20%; margin-right: 20%; background-color: #83dbc9;">
     <div id="nav_bar_padrao" style="margin-bottom: 100px;"></div>
     <main>
-        <form action="pesquisaProduto.php" method="get">
-            <section class="border border-3 rounded p-5" style="border: rgba(255, 0, 0, .5); backdrop-filter: blur(5px); backdrop-filter: hue-rotate(80deg);">
+        <section class="border border-3 rounded p-5" style="border: rgba(255, 0, 0, .5); backdrop-filter: blur(5px); backdrop-filter: hue-rotate(80deg);">
+            <form action="pesquisaProduto.php" method="get">
                 <h1 style="font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
                     CONSULTAR PRODUTOS CADASTRADOS</h1>
                 <div class="mb-3 w-50">
@@ -50,6 +50,8 @@ if ($lista == false || empty($_GET['nomeInput'])) {
                         </div>
                     </div>
                 </div>
+            </form>
+            <form action="#" method="post">
                 <table class="table table-bordered table-sm table-hover table-responsive text-center">
                     <thead>
                         <tr class="table-dark">
@@ -77,8 +79,8 @@ if ($lista == false || empty($_GET['nomeInput'])) {
                         <?php endforeach; ?>
                     </tbody>
                 </table>
-            </section>
-        </form>
+            </form>
+        </section>
     </main>
 
     </main>

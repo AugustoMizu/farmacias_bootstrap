@@ -105,4 +105,40 @@ class crudEstoque extends produtos
             return false;
         }
     }
+    function editarProduto(produtos $p){
+        $c = new Config();
+        $pdo = $c->getPDO();
+
+        $sql = $pdo->prepare("UPDATE produtos SET nome = :nome, preco = :preco, quantidade = :quantidade, categoria = :categoria, data_validade = :data_validade WHERE ID_produto = :ID_produto");
+        $sql->bindValue(':nome' , $p->nome);
+        $sql->bindValue(':preco', $p->preco);
+        $sql->bindValue(':quantidade', $p->quantidade);
+        $sql->bindValue(':categoria', $p->categoria);
+        $sql->bindValue(':data_validade', $p->data_validade);
+        $sql->bindValue(':ID_produto', $p->ID_produto);
+
+        if($sql->execute()){
+            // atualizado com sucesso
+            return true;            
+        }else{
+            // falha na atualização
+            return false;
+        }
+    }
+    function venderProduto($id, $quantidade){
+        $c = new Config();
+        $pdo = $c->getPDO();
+
+        $sql = $pdo->prepare("UPDATE produtos SET quantidade = quantidade - :quantidade WHERE ID_produto = :ID_produto AND quantidade > 0");
+        $sql->bindValue(':quantidade', $quantidade);
+        $sql->bindValue(':ID_produto', $id);
+
+        if($sql->execute()){
+            // atualizado com sucesso
+            return true;            
+        }else{
+            // falha na atualização
+            return false;
+        }
+    }
 }

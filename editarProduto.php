@@ -1,4 +1,5 @@
 <?php
+$id = urldecode($_GET['id']);
 $nome = urldecode($_GET['nome']);
 $preco = urldecode($_GET['preco']);
 $quantidade = urldecode($_GET['quantidade']);
@@ -25,7 +26,11 @@ $validade = urldecode($_GET['validade']);
     <main class="border border-3 rounded p-5" style="border: rgba(255, 0, 0, .5); backdrop-filter: blur(5px); backdrop-filter: hue-rotate(80deg);">
         <h1 style="font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
             EDITAR PRODUTO</h1>
-        <form action="#" method="post" id="formEditar">
+        <h3 style="font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
+            Altere somente o necessário
+        </h3>
+        <form action="editarProduto_action.php" method="post" id="formEditar">
+            <input type="hidden" name="idInput" value="<?= $id?>">
             <div class="mb-2 w-75">
                 <label for="nomeInput">Nome do produto</label>
                 <input type="text" name="nomeInput" class="form-control" value="<?= $nome ?>" maxlength="30" placeholder="Nome" required>
@@ -44,7 +49,7 @@ $validade = urldecode($_GET['validade']);
                 <div class="w-50">
                     <label for="categoriaInput">Categoria</label>
                     <select name="categoriaSelect" id="categoriaSelect" class="form-control w-50" required>
-                        <option value="<?= $categoria ?>" disabled selected><?= $categoria ?></option>
+                        <option value="<?= $categoria ?>" selected><?= $categoria ?></option>
                         <option value="ANALGÉSICOS">ANALGÉSICOS</option>
                         <option value="ANTI-INFLAMATÓRIOS">ANTI-INFLAMATÓRIOS</option>
                         <option value="ANTIBIÓTICOS">ANTIBIÓTICOS</option>
@@ -65,7 +70,7 @@ $validade = urldecode($_GET['validade']);
                     <input type="date" name="dataInput" class="form-control w-50" min="<?php echo date('Y-m-d'); ?>" value="<?= $validade ?>" placeholder="Selecione uma data..." required>
                 </div>
             </div>
-            <input type="button" id="salvar" value="SALVAR" class="btn btn-success btn-lg mt-4 " onclick="confirmarEdicao()">
+            <input type="submit" id="salvar" value="SALVAR" class="btn btn-success btn-lg mt-4 " onclick="confirmarEdicao()">
         </form>
     </main>
     <script>
