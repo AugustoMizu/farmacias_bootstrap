@@ -4,14 +4,11 @@ session_start(); // Inicie a sessão
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = $_POST['email'];
-    $senha_digitada = $_POST['senha'];
-    $tipo = $_POST['tipo']; // O tipo pode não ser necessário no login
+    $senha = $_POST['senha'];
+    $tipo = $_POST['tipo'];
 
-    // Cria uma nova instância da classe usuario
-    $u = new usuario(null, $email, $senha_digitada, null);
-
-    // Tenta realizar o login
-    $dados = $u->login($u, $senha_digitada);
+    $usuario = new usuario(null, $email, $senha, $tipo);
+    $dados = $usuario->cadastrar($usuario);
 
     if (isset($dados) && $dados != false) {
         $_SESSION['usuario'] = [
@@ -21,12 +18,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         ]; // Armazene o ID do usuário na sessão
         if ($_SESSION['usuario']['tipo'] == "ADMINISTRADOR") {
             header("Location: inicio.php");
-        } else {
+        }else{
             header("Location: inicio_comum.php");
         }
     } else {
-        // Falha no login
-        echo "Email ou senha incorretos.";
+        echo "Email já cadastrado com esse tipo.";
         header("Location: login_cadastro.php");
     }
 }

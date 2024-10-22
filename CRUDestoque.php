@@ -1,6 +1,8 @@
 <?php
 require "configPDO.php";
 
+
+
 class produtos
 {
 
@@ -26,7 +28,7 @@ class crudEstoque extends produtos
     function cadastrarProduto(produtos $p)
     {
 
-        $c = new config();
+        $c = new Config();
         $pdo = $c->getPDO();
 
         $sql = $pdo->prepare("SELECT * FROM produtos WHERE nome = :nome AND categoria = :categoria AND data_validade = :data_validade");
@@ -55,7 +57,7 @@ class crudEstoque extends produtos
 
     function  retornaTodosProdutos() //retorna os protudos cadstrados como uma lista ordenada
     {
-        $c = new config();
+        $c = new Config();
         $pdo = $c->getPDO();
 
         $sql = $pdo->query("SELECT * FROM produtos");
@@ -73,7 +75,7 @@ class crudEstoque extends produtos
 
     function retornaPorNome($nome) // retorna todos regsitros encontrados com um mesmo nome
     {
-        $c = new config();
+        $c = new Config();
         $pdo = $c->getPDO();
 
         $sql = $pdo->prepare("SELECT * FROM produtos WHERE nome LIKE :nome");
@@ -91,7 +93,7 @@ class crudEstoque extends produtos
         }
     }
     function excluirProduto(produtos $p){
-        $c = new config();
+        $c = new Config();
         $pdo = $c->getPDO();
 
         $sql = $pdo->prepare("DELETE FROM produtos WHERE ID_produto = :ID_produto");
@@ -125,20 +127,24 @@ class crudEstoque extends produtos
             return false;
         }
     }
-    function venderProduto($id, $quantidade){
-        $c = new Config();
-        $pdo = $c->getPDO();
+    function registrarVenda($id_usuario, $id_produto, $quantidade, $preco) {
+    $c = new Config();
+    $pdo = $c->getPDO();
 
-        $sql = $pdo->prepare("UPDATE produtos SET quantidade = quantidade - :quantidade WHERE ID_produto = :ID_produto AND quantidade > 0");
-        $sql->bindValue(':quantidade', $quantidade);
-        $sql->bindValue(':ID_produto', $id);
+    //chama a procedure registrar venda
+    $sql = $pdo->prepare("CALL registrarVenda(:id_usuario, :id_produto, :quantidade, :preco)"); 
+    
+    // Vincula os parâmetros
+    $sql->bindValue(':id_usuario', $id_usuario);
+    $sql->bindValue(':id_produto', $id_produto);
+    $sql->bindValue(':quantidade', $quantidade);
+    $sql->bindValue(':preco', $preco);
 
-        if($sql->execute()){
-            // atualizado com sucesso
-            return true;            
-        }else{
-            // falha na atualização
-            return false;
-        }
+    // Executa a stored procedure
+    if ($sql->execute()) {
+        return true; // Venda registrada com sucesso
+    } else {
+        return false; // Falha ao registrar a venda
     }
+}
 }

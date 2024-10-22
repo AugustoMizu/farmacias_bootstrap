@@ -1,6 +1,10 @@
 <?php
 require "crudEstoque.php";
 
+session_start(); // Inicie a sessão
+// Verifica o tipo de usuário
+$tipoUsuario = isset($_SESSION['usuario']) ? $_SESSION['usuario']['tipo'] : null;
+
 $p = new crudEstoque();
 $lista = [];
 if (!empty($_GET['nomeInput'])) {
@@ -31,7 +35,7 @@ if ($lista == false || empty($_GET['nomeInput'])) {
 <body style="margin-left: 20%; margin-right: 20%; background-color: #83dbc9;">
     <div id="nav_bar_padrao" style="margin-bottom: 100px;"></div>
     <main>
-        <section class="border border-3 rounded p-5" style="border: rgba(255, 0, 0, .5); backdrop-filter: blur(5px); backdrop-filter: hue-rotate(80deg);">
+        <section class="border border-3 rounded p-5 shadow" style="border: rgba(255, 0, 0, .5); background-color: #BFF7A3;">
             <form action="pesquisaProduto.php" method="get">
                 <h1 style="font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
                     CONSULTAR PRODUTOS CADASTRADOS</h1>
@@ -85,12 +89,23 @@ if ($lista == false || empty($_GET['nomeInput'])) {
 
     </main>
     <script>
-        // inclui a nav bar
-        fetch('nav_bar_padrao.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('nav_bar_padrao').innerHTML = data;
-            });
+        const tipoUsuario = "<?php echo $tipoUsuario; ?>";
+
+        if (tipoUsuario === 'COMUM') {
+            // Carrega a barra de navegação comum
+            fetch('nav_bar_comum.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('nav_bar_padrao').innerHTML = data;
+                });
+        } else {
+            // Carrega a barra de navegação padrão
+            fetch('nav_bar_padrao.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('nav_bar_padrao').innerHTML = data;
+                });
+        }
     </script>
     <script>
         ////////////////////// ordena a tabela por tipo

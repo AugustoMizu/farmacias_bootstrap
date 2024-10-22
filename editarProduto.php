@@ -6,6 +6,9 @@ $quantidade = urldecode($_GET['quantidade']);
 $categoria = urldecode($_GET['categoria']);
 $validade = urldecode($_GET['validade']);
 
+session_start(); // Inicie a sessão
+// Verifica o tipo de usuário
+$tipoUsuario = isset($_SESSION['usuario']) ? $_SESSION['usuario']['tipo']: null;
 
 ?>
 <!DOCTYPE html>
@@ -23,14 +26,14 @@ $validade = urldecode($_GET['validade']);
 
 <body style="margin-left: 25%; margin-right: 25%; background-color: #83dbc9;">
     <div id="nav_bar_padrao" style="margin-bottom: 100px;"></div>
-    <main class="border border-3 rounded p-5" style="border: rgba(255, 0, 0, .5); backdrop-filter: blur(5px); backdrop-filter: hue-rotate(80deg);">
+    <main class="border border-3 rounded p-5 shadow" style="border: rgba(255, 0, 0, .5); background-color: #BFF7A3;">
         <h1 style="font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
             EDITAR PRODUTO</h1>
         <h3 style="font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
             Altere somente o necessário
         </h3>
         <form action="editarProduto_action.php" method="post" id="formEditar">
-            <input type="hidden" name="idInput" value="<?= $id?>">
+            <input type="hidden" name="idInput" value="<?= $id ?>">
             <div class="mb-2 w-75">
                 <label for="nomeInput">Nome do produto</label>
                 <input type="text" name="nomeInput" class="form-control" value="<?= $nome ?>" maxlength="30" placeholder="Nome" required>
@@ -74,12 +77,23 @@ $validade = urldecode($_GET['validade']);
         </form>
     </main>
     <script>
-        //carrega o nav bar 
-        fetch('nav_bar_padrao.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('nav_bar_padrao').innerHTML = data;
-            });
+        const tipoUsuario = "<?php echo $tipoUsuario; ?>";
+
+        if (tipoUsuario === 'COMUM') {
+            // Carrega a barra de navegação comum
+            fetch('nav_bar_comum.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('nav_bar_padrao').innerHTML = data;
+                });
+        } else {
+            // Carrega a barra de navegação padrão
+            fetch('nav_bar_padrao.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('nav_bar_padrao').innerHTML = data;
+                });
+        }
     </script>
     <script>
         ////////// caixa para corfirmar edição

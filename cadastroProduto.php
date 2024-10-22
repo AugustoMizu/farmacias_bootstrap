@@ -1,5 +1,9 @@
 <?php
 $cadastrado = isset($_GET['cadastrado']) ? $_GET['cadastrado'] : null;
+session_start(); // Inicie a sessão
+// Verifica o tipo de usuário
+$tipoUsuario = isset($_SESSION['usuario']) ? $_SESSION['usuario']['tipo'] : null;
+
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -15,7 +19,7 @@ $cadastrado = isset($_GET['cadastrado']) ? $_GET['cadastrado'] : null;
 
 <body style="margin-left: 25%; margin-right: 25%; background-color: #83dbc9;">
   <div id="nav_bar_padrao" style="margin-bottom: 100px;"></div>
-  <main class="border border-3 rounded p-5" style="border: rgba(255, 0, 0, .5); backdrop-filter: blur(5px); backdrop-filter: hue-rotate(80deg);">
+  <main class="border border-3 rounded p-5 shadow" style="border: rgba(255, 0, 0, .5); background-color: #BFF7A3;">
     <h1 style="font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">CADASTRAR PRODUTOS</h1>
     <form action="cadastroProduto_action.php" method="post" id="formCadastro">
       <div class="mb-2 w-75">
@@ -61,11 +65,23 @@ $cadastrado = isset($_GET['cadastrado']) ? $_GET['cadastrado'] : null;
     </form>
   </main>
   <script>
-    fetch('nav_bar_padrao.html')
-      .then(response => response.text())
-      .then(data => {
-        document.getElementById('nav_bar_padrao').innerHTML = data;
-      });
+    const tipoUsuario = "<?php echo $tipoUsuario; ?>";
+
+    if (tipoUsuario === 'COMUM') {
+      // Carrega a barra de navegação comum
+      fetch('nav_bar_comum.html')
+        .then(response => response.text())
+        .then(data => {
+          document.getElementById('nav_bar_padrao').innerHTML = data;
+        });
+    } else {
+      // Carrega a barra de navegação padrão
+      fetch('nav_bar_padrao.html')
+        .then(response => response.text())
+        .then(data => {
+          document.getElementById('nav_bar_padrao').innerHTML = data;
+        });
+    }
   </script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
